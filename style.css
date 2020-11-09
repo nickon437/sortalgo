@@ -81,5 +81,24 @@ html, body, #root {
 }
 
 .head-line {
-    width: 6px;
+    /* width: 6px; */
+}
+
+.selection-sort-element-transition {
+    /* --distance: attr(data-distance px); */
+    /* animation: elment-right-to-left ease-in-out 1000ms; */
+    opacity: 0;
+    transition: opacity 1000ms ease-in-out
+}
+
+@keyframes elment-right-to-left {
+    33% {
+        transform: translateY(6rem);
+    } 66% {
+        transform: translateX(var(--distance));
+        transform: translateX(attr(data-distance px));
+        /* transform: translateX(8rem); */
+    } 100% {
+        transform: translateY(0);
+    }
 }

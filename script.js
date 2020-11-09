@@ -56,7 +56,15 @@ async function selectionSort() {
     let minIndex;
     const WAIT_TIME = 100;
 
-    const swapContent = (x, y) => {
+    async function swapContent(x, y) {
+        const xId = `#sel-sort-${localQuery[x]}`;
+        const yId = `#sel-sort-${localQuery[y]}`;
+
+        $(xId).fadeTo(1000, 0);
+        $(yId).fadeTo(1000, 0);
+
+        await sleep(1000);
+
         // DATA
         let temp = localQuery[x];
         localQuery[x] = localQuery[y];
@@ -66,6 +74,19 @@ async function selectionSort() {
         temp = unsortedHtml[x];
         unsortedHtml[x] = unsortedHtml[y];
         unsortedHtml[y] = temp;
+
+        // Backgorund color
+        temp = $(xId)[0].style.backgroundColor;
+        $(xId)[0].style.backgroundColor = $(yId)[0].style.backgroundColor;
+        $(yId)[0].style.backgroundColor = temp;
+        
+        temp = $(xId)[0].innerText;
+        $(xId)[0].innerText = $(yId)[0].innerText;
+        $(yId)[0].innerText = temp;
+
+        $(xId).fadeTo(1000, 1);
+        $(yId).fadeTo(1000, 1);
+        await sleep(1500);
         $(".card-illustration-elements").html(unsortedHtml.join(''));
     };
     
@@ -84,7 +105,7 @@ async function selectionSort() {
             }
         }
         // Swap the found minimum element with the first element
-        swapContent(minIndex, i);
+        await swapContent(minIndex, i);
         // }, 2000);
     }
 }
