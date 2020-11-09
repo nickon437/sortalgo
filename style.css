@@ -1,0 +1,17 @@
+.card {
+    display: flex;
+    gap: 0.2rem;
+}
+
+.element {
+    background-color: #c33f3b;
+    color: white;
+    width: 1rem;
+    height: 4rem;
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    padding-bottom: 0.5rem;
+    border-radius: 10px 10px 3px 3px;
+    border: 2px solid #333;
+}
