@@ -32,7 +32,11 @@ html, body, #root {
     justify-content: center;
 }
 
-.card {
+.card-illustration-line {
+    position: relative;;
+}
+
+.card-illustration-elements {
     display: flex;
     gap: 0.2rem;
     justify-content: center;
@@ -50,4 +54,26 @@ html, body, #root {
     padding-bottom: 0.5rem;
     border-radius: 10px 10px 3px 3px;
     border: 2px solid #333;
+    position: relative;
 }
+
+.element::after {
+    display: block;
+    height: 1rem;
+    width: 3px;
+    border-radius: 3px;
+    background-color: white;
+    position: absolute;
+    bottom: -1.5rem;
+    transform-origin: top center;
+    content: "";
+}
+
+.head-line {
+    height: 1rem;
+    width: 3px;
+    border-radius: 3px;
+    background-color: red;
+    position: absolute; */
+    /* left: 100px; */
+/* }

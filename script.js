@@ -35,7 +35,14 @@ const createUnsortedList = () => {
         return `<div id="sel-sort-${character}" class="element" style="background-color: ${color}">${character}</div>`
     });
 
-    $(".card").html(unsortedHtml.join(''));
+    $(".card-illustration-elements").html(unsortedHtml.join(''));
+}
+
+const getMidPoint = (array, character) => {
+    const margin = $(".card-illustration-elements").position().left;
+    const id = `#sel-sort-${character}`;
+    const leftPos = $(id).position().left - margin;
+    $('.head-line').css('left', leftPos);
 }
 
 const selectionSort = () => {
@@ -48,13 +55,14 @@ const selectionSort = () => {
         localQuery[y] = temp;
     };
 
+    getMidPoint(localQuery, 'M');
+
+
     for (let i = 0; i < localQuery.length - 1; i++) {
-        // Find the minimum element in unsorted array
         minIndex = i;
         for (let j = i + 1; j < localQuery.length; j++) {
             if (localQuery[j] < localQuery[minIndex]) {
                 minIndex = j;
-
             }
         }
         // Swap the found minimum element with the first element
@@ -63,4 +71,5 @@ const selectionSort = () => {
 }
 
 createUnsortedList();
-selectionSort();
+
+$('#sort-btn').click(() => selectionSort());
