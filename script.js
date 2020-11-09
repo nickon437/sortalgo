@@ -1,4 +1,9 @@
 const DEFAULT_UNSORTED_CHARS = ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'Z', 'X', 'C', 'V', 'B', 'N', 'M'];
+let unsortedHtml;
+
+const sleep = (ms) => {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
 
 const createUnsortedList = () => {
     const SORTED_COLORS = [
@@ -30,7 +35,7 @@ const createUnsortedList = () => {
         { character: 'Z', color: '#b060b2' },
     ]
 
-    const unsortedHtml = DEFAULT_UNSORTED_CHARS.map((character) => {
+    unsortedHtml = DEFAULT_UNSORTED_CHARS.map((character) => {
         const { color } = SORTED_COLORS.find((element) => element.character === character);
         return `<div id="sel-sort-${character}" class="element" style="background-color: ${color}">${character}</div>`
     });
@@ -38,35 +43,49 @@ const createUnsortedList = () => {
     $(".card-illustration-elements").html(unsortedHtml.join(''));
 }
 
-const getMidPoint = (array, character) => {
+const getMidPoint = (character) => {
     const margin = $(".card-illustration-elements").position().left;
     const id = `#sel-sort-${character}`;
     const leftPos = $(id).position().left - margin;
-    $('.head-line').css('left', leftPos);
+    return leftPos + 11;
+    // $('.head-line').css('left', leftPos + 11);
 }
 
-const selectionSort = () => {
+async function selectionSort() {
     const localQuery = [...DEFAULT_UNSORTED_CHARS];
     let minIndex;
+    const WAIT_TIME = 100;
 
     const swapContent = (x, y) => {
-        const temp = localQuery[x];
+        // DATA
+        let temp = localQuery[x];
         localQuery[x] = localQuery[y];
         localQuery[y] = temp;
+
+        // VISUALLY
+        temp = unsortedHtml[x];
+        unsortedHtml[x] = unsortedHtml[y];
+        unsortedHtml[y] = temp;
+        $(".card-illustration-elements").html(unsortedHtml.join(''));
     };
-
-    getMidPoint(localQuery, 'M');
-
-
+    
     for (let i = 0; i < localQuery.length - 1; i++) {
-        minIndex = i;
-        for (let j = i + 1; j < localQuery.length; j++) {
-            if (localQuery[j] < localQuery[minIndex]) {
-                minIndex = j;
+        // setTimeout(() => {
+            minIndex = i;
+            $('.head-line').css('left', getMidPoint(localQuery[minIndex]));
+            $('.tail-line').css('left', getMidPoint(localQuery[minIndex]));
+            await sleep(WAIT_TIME);
+            for (let j = i + 1; j < localQuery.length; j++) {
+                $('.tail-line').css('left', getMidPoint(localQuery[j]));
+                await sleep(WAIT_TIME);
+                if (localQuery[j] < localQuery[minIndex]) {
+                    minIndex = j;
+                    $('.head-line').css('left', getMidPoint(localQuery[minIndex]));
             }
         }
         // Swap the found minimum element with the first element
         swapContent(minIndex, i);
+        // }, 2000);
     }
 }
 

@@ -56,7 +56,7 @@ html, body, #root {
     border: 2px solid #333;
     position: relative;
 }
-
+/* 
 .element::after {
     display: block;
     height: 1rem;
@@ -67,13 +67,19 @@ html, body, #root {
     bottom: -1.5rem;
     transform-origin: top center;
     content: "";
+} */
+
+.tail-line,
+.head-line {
+    height: 1.5rem;
+    width: 3px;
+    border-radius: 3px;
+    background-color: white;
+    position: absolute;
+    top: 0.5rem;
+    /* left: 100px; */
 }
 
 .head-line {
-    height: 1rem;
-    width: 3px;
-    border-radius: 3px;
-    background-color: red;
-    position: absolute; */
-    /* left: 100px; */
-/* }
+    width: 6px;
+}
