@@ -28,15 +28,12 @@ const createUnsortedList = () => {
         { character: 'Y', color: '#a265b6'},
         { character: 'Z', color: '#b060b2'},
     ]
+
     const unsortedHtml = unsortedCharacters.map((character) => {
-        console.log(character);
-        const { color } = sortedColor.find((element) => {
-            console.log(element);
-            return element.character === character;
-        });
-        console.log(color);
-        return `<div class="element" style="background-color: ${color}">${character}</div>`
+        const { color } = sortedColor.find((element) => element.character === character);
+        return `<div id="sel-sort-${character}" class="element" style="background-color: ${color}">${character}</div>`
     });
+
     $(".card").html(unsortedHtml.join(''));
 }
 
