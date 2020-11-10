@@ -107,7 +107,9 @@ async function selectionSort() {
     // $('.sorted-marker').css('left', getMidPoint(localQuery[0]) - 100);
     
     for (let i = 0; i < localQuery.length - 1; i++) {
+        
         minIndex = i;
+        $('.tail-line').fadeIn();
         $('.head-line').css('left', getMidPoint(localQuery[minIndex]));
         $('.tail-line').css('left', getMidPoint(localQuery[minIndex]));
         await sleep(WAIT_TIME);
@@ -120,11 +122,15 @@ async function selectionSort() {
             }
         }
 
+        $('.tail-line').fadeOut();
         // Swap the found minimum element with the first element
         await swapContent(minIndex, i);
         $('.sorted-marker').css('left', getMidPoint(localQuery[i + 1]) - 90);
         
     }
+    
+    $('.head-line').fadeOut();
+    
 }
 
 createUnsortedList();
