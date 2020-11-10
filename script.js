@@ -48,7 +48,7 @@ const getMidPoint = (character) => {
     const id = `#sel-sort-${character}`;
     const leftPos = $(id).position().left - margin;
     return leftPos + 11;
-    // $('.head-line').css('left', leftPos + 11);
+    // $('.line-min').css('left', leftPos + 11);
 }
 
 async function selectionSort() {
@@ -60,7 +60,7 @@ async function selectionSort() {
     const GOT_CHA_WAIT_TIME = 500;
 
     $('button').prop('disabled', true);
-    $('.head-line').show();
+    $('.line-min').show();
 
     const getIdByIndex = (index) => {
         return `#sel-sort-${localQuery[index]}`
@@ -109,25 +109,25 @@ async function selectionSort() {
     for (let i = 0; i < localQuery.length - 1; i++) {
         
         minIndex = i;
-        $('.tail-line').fadeIn();
-        $('.head-line').css('left', getMidPoint(localQuery[minIndex]));
-        $('.tail-line').css('left', getMidPoint(localQuery[minIndex]));
+        $('.line-j').fadeIn();
+        $('.line-min').css('left', getMidPoint(localQuery[minIndex]));
+        $('.line-j').css('left', getMidPoint(localQuery[minIndex]));
         await sleep(WAIT_TIME);
         for (let j = i + 1; j < localQuery.length; j++) {
-            $('.tail-line').css('left', getMidPoint(localQuery[j]));
+            $('.line-j').css('left', getMidPoint(localQuery[j]));
             await sleep(GOT_CHA_WAIT_TIME);
             if (localQuery[j] < localQuery[minIndex]) {
-                $('.tail-line').css('background-color', 'red');
+                $('.line-j').css('background-color', 'red');
                 await sleep(GOT_CHA_WAIT_TIME);
 
                 minIndex = j;
-                $('.head-line').css('left', getMidPoint(localQuery[minIndex]));
+                $('.line-min').css('left', getMidPoint(localQuery[minIndex]));
                 await sleep(GOT_CHA_WAIT_TIME);
-                $('.tail-line').css('background-color', '');
+                $('.line-j').css('background-color', '');
             }
         }
 
-        $('.tail-line').fadeOut();
+        $('.line-j').fadeOut();
 
         // Swap the found minimum element with the first element
         await swapContent(minIndex, i);
@@ -135,7 +135,7 @@ async function selectionSort() {
         
     }
     
-    $('.head-line').fadeOut();
+    $('.line-min').fadeOut();
     $('button').fadeIn();
     $('#sort-btn').hide();
     $('button').prop('disabled', false);
