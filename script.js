@@ -54,14 +54,14 @@ const getMidPoint = (character) => {
 async function selectionSort() {
     const localQuery = [...DEFAULT_UNSORTED_CHARS];
     let minIndex;
-    // const WAIT_TIME = 0;
-    // const FADING_TIME = 0;
-    // const DELAY_AFTER_FADE = 0;
-    // const GOT_CHA_WAIT_TIME = 0;
-    const WAIT_TIME = 100;
-    const FADING_TIME = 500;
-    const DELAY_AFTER_FADE = 500;
-    const GOT_CHA_WAIT_TIME = 500;
+    const WAIT_TIME = 0;
+    const FADING_TIME = 0;
+    const DELAY_AFTER_FADE = 0;
+    const GOT_CHA_WAIT_TIME = 0;
+    // const WAIT_TIME = 100;
+    // const FADING_TIME = 500;
+    // const DELAY_AFTER_FADE = 500;
+    // const GOT_CHA_WAIT_TIME = 500;
 
     $('button').prop('disabled', true);
 
@@ -128,7 +128,7 @@ async function selectionSort() {
                 minIndex = j;
                 $('.line-min').css('left', getMidPoint(localQuery[minIndex]));
                 await sleep(GOT_CHA_WAIT_TIME);
-                
+
                 $('.line-j').css('background-color', '');
             }
         }
@@ -149,17 +149,21 @@ async function selectionSort() {
     $('button').prop('disabled', false);
 }
 
-createUnsortedList();
-$('#reset-btn').hide();
-
-$('#sort-btn').click(() => selectionSort());
-
-$('#reset-btn').click(() => {
+const initElementList = () => {
     $('#reset-btn').hide();
     $('#sort-btn').fadeIn();
     $('.line-min').show();
     $('.line-i').show();
 
     createUnsortedList();
-    $('.sorted-marker').css('left', `calc(${getMidPoint(DEFAULT_UNSORTED_CHARS[0])} - 5.5rem)`);
-});
+    const startingPos = getMidPoint(DEFAULT_UNSORTED_CHARS[0]);
+    $('.sorted-marker').css('left', `calc(${startingPos} - 5.5rem)`);
+    $('.line-min').css('left', startingPos);
+    $('.line-i').css('left', startingPos);
+    $('.line-j').css('left', startingPos);
+}
+
+$('#sort-btn').click(() => selectionSort());
+$('#reset-btn').click(() => initElementList());
+
+initElementList();
