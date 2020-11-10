@@ -59,8 +59,8 @@ async function selectionSort() {
     const DELAY_AFTER_FADE = 500;
     const GOT_CHA_WAIT_TIME = 500;
 
-    $('button').fadeOut();
-
+    $('button').prop('disabled', true);
+    $('.head-line').show();
 
     const getIdByIndex = (index) => {
         return `#sel-sort-${localQuery[index]}`
@@ -106,9 +106,6 @@ async function selectionSort() {
         $(".card-illustration-elements").html(unsortedHtml.join(''));
     };
 
-
-    // $('.sorted-marker').css('left', getMidPoint(localQuery[0]) - 100);
-    
     for (let i = 0; i < localQuery.length - 1; i++) {
         
         minIndex = i;
@@ -118,10 +115,11 @@ async function selectionSort() {
         await sleep(WAIT_TIME);
         for (let j = i + 1; j < localQuery.length; j++) {
             $('.tail-line').css('left', getMidPoint(localQuery[j]));
-            await sleep(WAIT_TIME);
+            await sleep(GOT_CHA_WAIT_TIME);
             if (localQuery[j] < localQuery[minIndex]) {
                 $('.tail-line').css('background-color', 'red');
                 await sleep(GOT_CHA_WAIT_TIME);
+
                 minIndex = j;
                 $('.head-line').css('left', getMidPoint(localQuery[minIndex]));
                 await sleep(GOT_CHA_WAIT_TIME);
@@ -140,6 +138,7 @@ async function selectionSort() {
     $('.head-line').fadeOut();
     $('button').fadeIn();
     $('#sort-btn').hide();
+    $('button').prop('disabled', false);
 }
 
 createUnsortedList();
