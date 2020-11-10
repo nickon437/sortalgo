@@ -1,5 +1,6 @@
 const DEFAULT_UNSORTED_CHARS = ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'Z', 'X', 'C', 'V', 'B', 'N', 'M'];
 let unsortedHtml;
+let speed = 1;
 
 const sleep = (ms) => {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -54,14 +55,11 @@ const getMidPoint = (character) => {
 async function selectionSort() {
     const localQuery = [...DEFAULT_UNSORTED_CHARS];
     let minIndex;
-    const WAIT_TIME = 0;
-    const FADING_TIME = 0;
-    const DELAY_AFTER_FADE = 0;
-    const GOT_CHA_WAIT_TIME = 0;
-    // const WAIT_TIME = 100;
-    // const FADING_TIME = 500;
-    // const DELAY_AFTER_FADE = 500;
-    // const GOT_CHA_WAIT_TIME = 500;
+    
+    let waitTime = 100 * speed;
+    let fadingTime = 500 * speed;
+    let delayAfterFade = 500 * speed;
+    let gotChaWaitTime = 500 * speed;
 
     $('button').prop('disabled', true);
 
@@ -79,10 +77,10 @@ async function selectionSort() {
         const xId = getIdByIndex(x);
         const yId = getIdByIndex(y);
 
-        $(xId).fadeTo(FADING_TIME, 0);
-        $(yId).fadeTo(FADING_TIME, 0);
+        $(xId).fadeTo(fadingTime, 0);
+        $(yId).fadeTo(fadingTime, 0);
 
-        await sleep(FADING_TIME);
+        await sleep(fadingTime);
 
         // DATA
         let temp = localQuery[x];
@@ -98,9 +96,9 @@ async function selectionSort() {
         $(xId).text($(yId).text());
         $(yId).text(temp);
         
-        $(xId).fadeTo(FADING_TIME, 1);
-        $(yId).fadeTo(FADING_TIME, 1);
-        await sleep(DELAY_AFTER_FADE);
+        $(xId).fadeTo(fadingTime, 1);
+        $(yId).fadeTo(fadingTime, 1);
+        await sleep(delayAfterFade);
 
         // Swapping the div elements because swapping background and innerText is only for the visual effect but the ID is still stay the same.
         temp = unsortedHtml[x];
@@ -110,24 +108,30 @@ async function selectionSort() {
     };
 
     for (let i = 0; i < localQuery.length - 1; i++) {
-        
         minIndex = i;
         $('.line-min').css('left', getMidPoint(localQuery[minIndex]));
         $('.line-i').css('left', getMidPoint(localQuery[minIndex]));
-
-        await sleep(WAIT_TIME);
+        
+        await sleep(waitTime);
         for (let j = i + 1; j < localQuery.length; j++) {
+            
+            // Update speed        
+            waitTime = 100 * speed;
+            fadingTime = 500 * speed;
+            delayAfterFade = 500 * speed;
+            gotChaWaitTime = 500 * speed;
+
             $('.line-j').fadeIn();
             $('.line-j').css('left', getMidPoint(localQuery[j]));
-            await sleep(GOT_CHA_WAIT_TIME);
+            await sleep(gotChaWaitTime);
 
             if (localQuery[j] < localQuery[minIndex]) {
                 $('.line-j').css('background-color', 'red');
-                await sleep(GOT_CHA_WAIT_TIME);
+                await sleep(gotChaWaitTime);
 
                 minIndex = j;
                 $('.line-min').css('left', getMidPoint(localQuery[minIndex]));
-                await sleep(GOT_CHA_WAIT_TIME);
+                await sleep(gotChaWaitTime);
 
                 $('.line-j').css('background-color', '');
             }
@@ -165,5 +169,6 @@ const initElementList = () => {
 
 $('#sort-btn').click(() => selectionSort());
 $('#reset-btn').click(() => initElementList());
+$('#speed-slider').on('input', (e) => speed = e.target.value);
 
 initElementList();

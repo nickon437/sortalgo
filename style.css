@@ -1,6 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Nova+Mono&display=swap');
-
 html {
     box-sizing: border-box;
     scroll-behavior: smooth;
@@ -11,6 +10,7 @@ html {
         font-size: 12px;
     }
 }
+
 @media screen and (max-width: 600px) {
     html {
         font-size: 8px;
@@ -93,6 +93,7 @@ button:disabled {
 .hflex {
     display: flex;
     gap: 0.5rem;
+    align-items: center;
 }
 
 /* .card, .card-illustration, .card-illustration-elements {
@@ -190,9 +191,11 @@ button:disabled {
 .line-min::after {
     content: "min";
 }
+
 .line-i::after {
     content: "i";
 }
+
 .line-j::after {
     content: "j";
 }
@@ -250,3 +253,61 @@ button:disabled {
         transform: translateY(0);
     }
 }
+
+/** SLIDER **/
+
+.slider-container {
+    width: 100%;
+    transition: all 0.3s ease-in-out;
+}
+
+/* The slider itself */
+
+.slider {
+    -webkit-appearance: none;
+    /* Override default CSS styles */
+    appearance: none;
+    width: 100%;
+    /* Full-width */
+    height: 5px;
+    /* Specified height */
+    background: white;
+    /* Grey background */
+    outline: none;
+    /* Remove outline */
+    opacity: 0.8;
+    /* Set transparency (for mouse-over effects on hover) */
+    -webkit-transition: .2s;
+    /* 0.2 seconds transition on hover */
+    transition: opacity .2s;
+    border-radius: 3px;
+    transition: all 0.3s ease-in-out;
+}
+
+/* Mouse-over effects */
+
+.slider:hover {
+    opacity: 1;
+    /* Fully shown on mouse-over */
+}
+
+.slider::-webkit-slider-thumb, .slider::-moz-range-thumb {
+    width: 16px;
+    /* Set a specific slider handle width */
+    height: 16px;
+    /* Slider handle height */
+    background: blueviolet;
+    cursor: pointer;
+    /* Cursor on hover */
+    border: none;
+    transition: all 0.3s ease-in-out;
+}
+
+/* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    /* Override default look */
+    appearance: none;
+}
+
