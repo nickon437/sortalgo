@@ -1,8 +1,20 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Nova+Mono&display=swap');
 html {
     box-sizing: border-box;
     scroll-behavior: smooth;
+}
+
+@media screen and (max-width: 800px) {
+    html {
+        font-size: 12px;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    html {
+        font-size: 8px;
+    }
 }
 
 *, *::before, *::after {
@@ -28,8 +40,10 @@ html, body, #root {
 
 #root {
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
+    gap: 1rem;
 }
 
 button {
@@ -58,7 +72,26 @@ button:hover {
     background-color: rebeccapurple;
 }
 
+button:disabled {
+    background-color: rebeccapurple;
+    filter: brightness(50%);
+    cursor: default;
+}
 
+img.icon {
+    height: 1.25rem;
+}
+
+label {
+    font-family: inherit;
+    font-weight: bold;
+}
+
+.title {
+    font-size: 5rem;
+    font-family: inherit;
+    font-family: 'Nova Mono';
+}
 
 .card {
     display: flex;
@@ -66,9 +99,14 @@ button:hover {
     gap: 1rem;
 }
 
-.hflex {
+.hflex, .hflex-small {
     display: flex;
     gap: 0.5rem;
+    align-items: center;
+}
+
+.hflex-small {
+    gap: 0.25rem;
 }
 
 /* .card, .card-illustration, .card-illustration-elements {
@@ -76,7 +114,8 @@ button:hover {
 } */
 
 .card-illustration-line {
-    position: relative;;
+    position: relative;
+    ;
 }
 
 .card-illustration-elements {
@@ -99,6 +138,7 @@ button:hover {
     border: 2px solid #333;
     position: relative;
 }
+
 /* 
 .element::after {
     display: block;
@@ -112,25 +152,65 @@ button:hover {
     content: "";
 } */
 
-.tail-line,
-.head-line {
+.line-j, .line-i, .line-min {
     height: 1.5rem;
     width: 3px;
-    border-radius: 3px;
-    background-color: white;
     position: absolute;
     top: 0.5rem;
     /* left: 100px; */
 }
 
-.head-line {
+.line-min {
+    background-color: white;
+    color: black;
     /* width: 6px; */
     transition: all 300ms ease-in-out;
 }
 
-.tail-line {
+.line-i {
+    background-color: #ffda0a;
+    color: black;
+}
+
+.line-j {
     background-color: #4caf52;
-    transition: all 100ms ease-in-out;
+    transition: all 100ms linear;
+}
+
+.line-min::before, .line-i::before, .line-j::before {
+    content: "";
+    height: 8px;
+    width: 8px;
+    background-color: inherit;
+    border-radius: 50%;
+    position: absolute;
+    /* left: -2px; */
+    left: -100%;
+    transition: inherit;
+}
+
+.line-min::after, .line-i::after, .line-j::after {
+    position: absolute;
+    background-color: inherit;
+    border-radius: 7px;
+    padding: 0.25rem;
+    min-width: 1rem;
+    text-align: center;
+    transform: translateX(-50%);
+    left: 50%;
+    top: 100%;
+}
+
+.line-min::after {
+    content: "min";
+}
+
+.line-i::after {
+    content: "i";
+}
+
+.line-j::after {
+    content: "j";
 }
 
 .sorted-marker {
@@ -138,6 +218,7 @@ button:hover {
     width: 5rem;
     border-right: 3px solid white;
     border-bottom: 3px solid white;
+    border-bottom-right-radius: 7px;
     position: absolute;
     top: 0.5rem;
     left: -5rem;
@@ -175,11 +256,79 @@ button:hover {
 @keyframes elment-right-to-left {
     33% {
         transform: translateY(6rem);
-    } 66% {
+    }
+    66% {
         transform: translateX(var(--distance));
         transform: translateX(attr(data-distance px));
         /* transform: translateX(8rem); */
-    } 100% {
+    }
+    100% {
         transform: translateY(0);
     }
 }
+
+/** SLIDER **/
+
+.slider-container {
+    width: 100%;
+    transition: all 0.3s ease-in-out;
+}
+
+/* The slider itself */
+
+.slider {
+    -webkit-appearance: none;
+    /* Override default CSS styles */
+    appearance: none;
+    width: 100%;
+    /* Full-width */
+    height: 5px;
+    /* Specified height */
+    background: white;
+    /* Grey background */
+    outline: none;
+    /* Remove outline */
+    opacity: 0.8;
+    /* Set transparency (for mouse-over effects on hover) */
+    -webkit-transition: .2s;
+    /* 0.2 seconds transition on hover */
+    transition: opacity .2s;
+    border-radius: 3px;
+    transition: all 0.3s ease-in-out;
+}
+
+/* Mouse-over effects */
+
+.slider:hover {
+    opacity: 1;
+    /* Fully shown on mouse-over */
+}
+
+.slider::-webkit-slider-thumb, .slider::-moz-range-thumb {
+    width: 16px;
+    /* Set a specific slider handle width */
+    height: 16px;
+    /* Slider handle height */
+    background: blueviolet;
+    cursor: pointer;
+    /* Cursor on hover */
+    border: none;
+    transition: all 0.3s ease-in-out;
+}
+
+/* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    /* Override default look */
+    appearance: none;
+}
+
+
+.slider::-webkit-slider-thumb::before, .slider::-moz-range-thumb::before {
+    content: "";
+    height: 1rem;
+    width: 1rem;
+    background-color: tomato;
+}
+

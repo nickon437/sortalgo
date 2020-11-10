@@ -1,5 +1,6 @@
 const DEFAULT_UNSORTED_CHARS = ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'Z', 'X', 'C', 'V', 'B', 'N', 'M'];
 let unsortedHtml;
+let speed = 1;
 
 const sleep = (ms) => {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -47,20 +48,20 @@ const getMidPoint = (character) => {
     const margin = $(".card-illustration-elements").position().left;
     const id = `#sel-sort-${character}`;
     const leftPos = $(id).position().left - margin;
-    return leftPos + 11;
-    // $('.head-line').css('left', leftPos + 11);
+    return `calc(${leftPos}px + 1rem*2/3)`;
+    // $('.line-min').css('left', leftPos + 11);
 }
 
 async function selectionSort() {
     const localQuery = [...DEFAULT_UNSORTED_CHARS];
     let minIndex;
-    const WAIT_TIME = 100;
-    const FADING_TIME = 500;
-    const DELAY_AFTER_FADE = 500;
-    const GOT_CHA_WAIT_TIME = 500;
+    
+    let waitTime = 100 * speed;
+    let fadingTime = 500 * speed;
+    let delayAfterFade = 500 * speed;
+    let gotChaWaitTime = 500 * speed;
 
-    $('button').fadeOut();
-
+    $('button').prop('disabled', true);
 
     const getIdByIndex = (index) => {
         return `#sel-sort-${localQuery[index]}`
@@ -76,10 +77,10 @@ async function selectionSort() {
         const xId = getIdByIndex(x);
         const yId = getIdByIndex(y);
 
-        $(xId).fadeTo(FADING_TIME, 0);
-        $(yId).fadeTo(FADING_TIME, 0);
+        $(xId).fadeTo(fadingTime, 0);
+        $(yId).fadeTo(fadingTime, 0);
 
-        await sleep(FADING_TIME);
+        await sleep(fadingTime);
 
         // DATA
         let temp = localQuery[x];
@@ -95,9 +96,9 @@ async function selectionSort() {
         $(xId).text($(yId).text());
         $(yId).text(temp);
         
-        $(xId).fadeTo(FADING_TIME, 1);
-        $(yId).fadeTo(FADING_TIME, 1);
-        await sleep(DELAY_AFTER_FADE);
+        $(xId).fadeTo(fadingTime, 1);
+        $(yId).fadeTo(fadingTime, 1);
+        await sleep(delayAfterFade);
 
         // Swapping the div elements because swapping background and innerText is only for the visual effect but the ID is still stay the same.
         temp = unsortedHtml[x];
@@ -106,49 +107,71 @@ async function selectionSort() {
         $(".card-illustration-elements").html(unsortedHtml.join(''));
     };
 
-
-    // $('.sorted-marker').css('left', getMidPoint(localQuery[0]) - 100);
-    
     for (let i = 0; i < localQuery.length - 1; i++) {
-        
         minIndex = i;
-        $('.tail-line').fadeIn();
-        $('.head-line').css('left', getMidPoint(localQuery[minIndex]));
-        $('.tail-line').css('left', getMidPoint(localQuery[minIndex]));
-        await sleep(WAIT_TIME);
+        $('.line-min').css('left', getMidPoint(localQuery[minIndex]));
+        $('.line-i').css('left', getMidPoint(localQuery[minIndex]));
+        
+        await sleep(waitTime);
         for (let j = i + 1; j < localQuery.length; j++) {
-            $('.tail-line').css('left', getMidPoint(localQuery[j]));
-            await sleep(WAIT_TIME);
+            
+            // Update speed        
+            waitTime = 100 * speed;
+            fadingTime = 500 * speed;
+            delayAfterFade = 500 * speed;
+            gotChaWaitTime = 500 * speed;
+
+            $('.line-j').fadeIn();
+            $('.line-j').css('left', getMidPoint(localQuery[j]));
+            await sleep(gotChaWaitTime);
+
             if (localQuery[j] < localQuery[minIndex]) {
-                $('.tail-line').css('background-color', 'red');
-                await sleep(GOT_CHA_WAIT_TIME);
+                $('.line-j').css('background-color', 'red');
+                await sleep(gotChaWaitTime);
+
                 minIndex = j;
-                $('.head-line').css('left', getMidPoint(localQuery[minIndex]));
-                await sleep(GOT_CHA_WAIT_TIME);
-                $('.tail-line').css('background-color', '');
+                $('.line-min').css('left', getMidPoint(localQuery[minIndex]));
+                await sleep(gotChaWaitTime);
+
+                $('.line-j').css('background-color', '');
             }
         }
 
-        $('.tail-line').fadeOut();
+        // $('.line-j').fadeOut();
 
         // Swap the found minimum element with the first element
         await swapContent(minIndex, i);
-        $('.sorted-marker').css('left', getMidPoint(localQuery[i + 1]) - 90);
+        $('.sorted-marker').css('left', `calc(${getMidPoint(localQuery[i + 1])} - 5.5rem)`);
+        // $('.sorted-marker').css('left', `calc(${getMidPoint(localQuery[i + 1])}px - 5.5rem)`);
         
     }
     
-    $('.head-line').fadeOut();
+    $('.line-min').fadeOut();
+    $('.line-i').fadeOut();
     $('button').fadeIn();
     $('#sort-btn').hide();
+    $('button').prop('disabled', false);
 }
 
-createUnsortedList();
-$('#reset-btn').hide();
-
-$('#sort-btn').click(() => selectionSort());
-$('#reset-btn').click(() => {
+const initElementList = () => {
     $('#reset-btn').hide();
     $('#sort-btn').fadeIn();
+    $('.line-min').show();
+    $('.line-i').show();
+
     createUnsortedList();
-    $('.sorted-marker').css('left', getMidPoint(DEFAULT_UNSORTED_CHARS[0]) - 90);
+    const startingPos = getMidPoint(DEFAULT_UNSORTED_CHARS[0]);
+    $('.sorted-marker').css('left', `calc(${startingPos} - 5.5rem)`);
+    $('.line-min').css('left', startingPos);
+    $('.line-i').css('left', startingPos);
+    $('.line-j').css('left', startingPos);
+}
+
+$('#sort-btn').click(() => selectionSort());
+$('#reset-btn').click(() => initElementList());
+$('#speed-slider').on('input', (e) => {
+    speed = e.target.value;
+    $('#delay-value').text(`x${speed}`);
 });
+
+initElementList();
