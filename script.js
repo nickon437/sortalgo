@@ -57,6 +57,9 @@ async function selectionSort() {
     const WAIT_TIME = 100;
     const FADING_TIME = 500;
     const DELAY_AFTER_FADE = 500;
+    const GOT_CHA_WAIT_TIME = 500;
+
+    $('button').fadeOut();
 
 
     const getIdByIndex = (index) => {
@@ -117,12 +120,17 @@ async function selectionSort() {
             $('.tail-line').css('left', getMidPoint(localQuery[j]));
             await sleep(WAIT_TIME);
             if (localQuery[j] < localQuery[minIndex]) {
+                $('.tail-line').css('background-color', 'red');
+                await sleep(GOT_CHA_WAIT_TIME);
                 minIndex = j;
                 $('.head-line').css('left', getMidPoint(localQuery[minIndex]));
+                await sleep(GOT_CHA_WAIT_TIME);
+                $('.tail-line').css('background-color', '');
             }
         }
 
         $('.tail-line').fadeOut();
+
         // Swap the found minimum element with the first element
         await swapContent(minIndex, i);
         $('.sorted-marker').css('left', getMidPoint(localQuery[i + 1]) - 90);
@@ -130,10 +138,17 @@ async function selectionSort() {
     }
     
     $('.head-line').fadeOut();
-    
+    $('button').fadeIn();
+    $('#sort-btn').hide();
 }
 
 createUnsortedList();
+$('#reset-btn').hide();
 
 $('#sort-btn').click(() => selectionSort());
-$('#reset-btn').click(() => createUnsortedList());
+$('#reset-btn').click(() => {
+    $('#reset-btn').hide();
+    $('#sort-btn').fadeIn();
+    createUnsortedList();
+    $('.sorted-marker').css('left', getMidPoint(DEFAULT_UNSORTED_CHARS[0]) - 90);
+});

@@ -1,0 +1,26 @@
+{
+  "name": "sorting-algorithm-demo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "deploy": "gh-pages -d build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nickon437/sorting-algorithm-demo.git"
+  },
+  "author": "Nick On",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nickon437/sorting-algorithm-demo/issues"
+  },
+  "homepage": "https://github.com/nickon437/sorting-algorithm-demo#readme",
+  "dependencies": {
+    "gh-pages": "^3.1.0",
+    "jquery-minify": "^1.0.0",
+    "minify": "^6.0.1",
+    "uglify-js": "^3.11.5"
+  }
+}
