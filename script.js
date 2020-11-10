@@ -47,13 +47,17 @@ const getMidPoint = (character) => {
     const margin = $(".card-illustration-elements").position().left;
     const id = `#sel-sort-${character}`;
     const leftPos = $(id).position().left - margin;
-    return leftPos + 11;
+    return `calc(${leftPos}px + 1rem*2/3)`;
     // $('.line-min').css('left', leftPos + 11);
 }
 
 async function selectionSort() {
     const localQuery = [...DEFAULT_UNSORTED_CHARS];
     let minIndex;
+    // const WAIT_TIME = 0;
+    // const FADING_TIME = 0;
+    // const DELAY_AFTER_FADE = 0;
+    // const GOT_CHA_WAIT_TIME = 0;
     const WAIT_TIME = 100;
     const FADING_TIME = 500;
     const DELAY_AFTER_FADE = 500;
@@ -112,6 +116,7 @@ async function selectionSort() {
         $('.line-j').fadeIn();
         $('.line-min').css('left', getMidPoint(localQuery[minIndex]));
         $('.line-j').css('left', getMidPoint(localQuery[minIndex]));
+        $('.line-i').css('left', getMidPoint(localQuery[minIndex]));
         await sleep(WAIT_TIME);
         for (let j = i + 1; j < localQuery.length; j++) {
             $('.line-j').css('left', getMidPoint(localQuery[j]));
@@ -131,11 +136,13 @@ async function selectionSort() {
 
         // Swap the found minimum element with the first element
         await swapContent(minIndex, i);
-        $('.sorted-marker').css('left', getMidPoint(localQuery[i + 1]) - 90);
+        $('.sorted-marker').css('left', `calc(${getMidPoint(localQuery[i + 1])} - 5.5rem)`);
+        // $('.sorted-marker').css('left', `calc(${getMidPoint(localQuery[i + 1])}px - 5.5rem)`);
         
     }
     
     $('.line-min').fadeOut();
+    $('.line-i').fadeOut();
     $('button').fadeIn();
     $('#sort-btn').hide();
     $('button').prop('disabled', false);
