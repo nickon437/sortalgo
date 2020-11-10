@@ -137,7 +137,7 @@ async function selectionSort() {
             }
         }
 
-        $('.line-j').fadeOut();
+        // $('.line-j').fadeOut();
 
         // Swap the found minimum element with the first element
         await swapContent(minIndex, i);
@@ -169,6 +169,9 @@ const initElementList = () => {
 
 $('#sort-btn').click(() => selectionSort());
 $('#reset-btn').click(() => initElementList());
-$('#speed-slider').on('input', (e) => speed = e.target.value);
+$('#speed-slider').on('input', (e) => {
+    speed = e.target.value;
+    $('#delay-value').text(`x${speed}`);
+});
 
 initElementList();

@@ -13,15 +13,21 @@
         <div class="card" name="selection-sort">
             <div class="hflex">
                 <button id="sort-btn" type="button">
-                    <img src="./resources/images/sort-alphabetical-ascending.png"/>
+                    <img src="./resources/images/sort-alphabetical-ascending.png" class="icon" />
                     SORT
                 </button>
                 <button id="reset-btn" type="button">
-                    <img src="./resources/images/reload.png"/>
+                    <img src="./resources/images/reload.png" class="icon"/>
                     RESET
                 </button>
                 <div class="slider-container">
-                    <input type="range" min="0" max="2" value="1" step="0.25" class="slider" id="speed-slider" autocomplete="off">
+                    <div class="hflex-small">
+                        <img src="./resources/images/speedometer.png" class="icon" />
+                        <label>DELAY: </label>
+                        <label id="delay-value" name="delay-value">x1</label>
+                    </div>
+                    <input type="range" min="0" max="5" value="1" step="0.1" class="slider" id="speed-slider"
+                        autocomplete="off">
                 </div>
             </div>
             <div class="card-illustration">
