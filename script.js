@@ -55,61 +55,79 @@ async function selectionSort() {
     const localQuery = [...DEFAULT_UNSORTED_CHARS];
     let minIndex;
     const WAIT_TIME = 100;
+    const FADING_TIME = 500;
+    const DELAY_AFTER_FADE = 500;
 
+
+    const getIdByIndex = (index) => {
+        return `#sel-sort-${localQuery[index]}`
+    }
+
+    /**
+     * To create a seemless swapping effect, 
+     * 
+     * @param {*} x 
+     * @param {*} y 
+     */
     async function swapContent(x, y) {
-        const xId = `#sel-sort-${localQuery[x]}`;
-        const yId = `#sel-sort-${localQuery[y]}`;
+        const xId = getIdByIndex(x);
+        const yId = getIdByIndex(y);
 
-        $(xId).fadeTo(1000, 0);
-        $(yId).fadeTo(1000, 0);
+        $(xId).fadeTo(FADING_TIME, 0);
+        $(yId).fadeTo(FADING_TIME, 0);
 
-        await sleep(1000);
+        await sleep(FADING_TIME);
 
         // DATA
         let temp = localQuery[x];
         localQuery[x] = localQuery[y];
         localQuery[y] = temp;
-
-        // VISUALLY
-        temp = unsortedHtml[x];
-        unsortedHtml[x] = unsortedHtml[y];
-        unsortedHtml[y] = temp;
-
-        // Backgorund color
+        
+        // Swapp background and innerText for the visual fading effect
         temp = $(xId)[0].style.backgroundColor;
         $(xId)[0].style.backgroundColor = $(yId)[0].style.backgroundColor;
         $(yId)[0].style.backgroundColor = temp;
         
-        temp = $(xId)[0].innerText;
-        $(xId)[0].innerText = $(yId)[0].innerText;
-        $(yId)[0].innerText = temp;
+        temp = $(xId).text();
+        $(xId).text($(yId).text());
+        $(yId).text(temp);
+        
+        $(xId).fadeTo(FADING_TIME, 1);
+        $(yId).fadeTo(FADING_TIME, 1);
+        await sleep(DELAY_AFTER_FADE);
 
-        $(xId).fadeTo(1000, 1);
-        $(yId).fadeTo(1000, 1);
-        await sleep(1500);
+        // Swapping the div elements because swapping background and innerText is only for the visual effect but the ID is still stay the same.
+        temp = unsortedHtml[x];
+        unsortedHtml[x] = unsortedHtml[y];
+        unsortedHtml[y] = temp;
         $(".card-illustration-elements").html(unsortedHtml.join(''));
     };
+
+
+    // $('.sorted-marker').css('left', getMidPoint(localQuery[0]) - 100);
     
     for (let i = 0; i < localQuery.length - 1; i++) {
-        // setTimeout(() => {
-            minIndex = i;
-            $('.head-line').css('left', getMidPoint(localQuery[minIndex]));
-            $('.tail-line').css('left', getMidPoint(localQuery[minIndex]));
+        minIndex = i;
+        $('.head-line').css('left', getMidPoint(localQuery[minIndex]));
+        $('.tail-line').css('left', getMidPoint(localQuery[minIndex]));
+        await sleep(WAIT_TIME);
+        for (let j = i + 1; j < localQuery.length; j++) {
+            $('.tail-line').css('left', getMidPoint(localQuery[j]));
             await sleep(WAIT_TIME);
-            for (let j = i + 1; j < localQuery.length; j++) {
-                $('.tail-line').css('left', getMidPoint(localQuery[j]));
-                await sleep(WAIT_TIME);
-                if (localQuery[j] < localQuery[minIndex]) {
-                    minIndex = j;
-                    $('.head-line').css('left', getMidPoint(localQuery[minIndex]));
+            if (localQuery[j] < localQuery[minIndex]) {
+                minIndex = j;
+                $('.head-line').css('left', getMidPoint(localQuery[minIndex]));
             }
         }
+
         // Swap the found minimum element with the first element
         await swapContent(minIndex, i);
-        // }, 2000);
+        $('.sorted-marker').css('left', getMidPoint(localQuery[i + 1]) - 90);
+        
     }
 }
 
 createUnsortedList();
 
 $('#sort-btn').click(() => selectionSort());
+$('#reset-btn').click(() => createUnsortedList());

@@ -84,6 +84,36 @@ html, body, #root {
     /* width: 6px; */
 }
 
+.sorted-marker {
+    height: 1.5rem;
+    width: 5rem;
+    border-right: 3px solid white;
+    border-bottom: 3px solid white;
+    position: absolute;
+    top: 0.5rem;
+}
+
+.sorted-marker::before {
+    content: "sorted";
+    position: absolute;
+    right: 0.5rem;
+}
+
+.sorted-marker::after {
+    content: "";
+    background-image: url("./resources/images/chevron-left.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    /* background-color: white; */
+    width: 2rem;
+    height: 2rem;
+    position: absolute;
+    /* background-color: white; */
+    right: 3.6rem;
+    top: 0.45rem;
+    /* transform: rotate(50deg); */
+}
+
 .selection-sort-element-transition {
     /* --distance: attr(data-distance px); */
     /* animation: elment-right-to-left ease-in-out 1000ms; */
