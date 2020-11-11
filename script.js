@@ -1,6 +1,6 @@
 const DEFAULT_UNSORTED_CHARS = ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'Z', 'X', 'C', 'V', 'B', 'N', 'M'];
 let unsortedHtml;
-let speed = 1;
+let multiplier = 1;
 
 const sleep = (ms) => {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -56,12 +56,9 @@ async function selectionSort() {
     const localQuery = [...DEFAULT_UNSORTED_CHARS];
     let minIndex;
     
-    let waitTime = 100 * speed;
-    let fadingTime = 500 * speed;
-    let delayAfterFade = 500 * speed;
-    let gotChaWaitTime = 500 * speed;
+    const FACTOR = 500;
+    let waitTime = FACTOR * multiplier;
 
-    
     $('.illustration-line').fadeIn();
     $('button').prop('disabled', true);
 
@@ -79,10 +76,10 @@ async function selectionSort() {
         const xId = getIdByIndex(x);
         const yId = getIdByIndex(y);
 
-        $(xId).fadeTo(fadingTime, 0);
-        $(yId).fadeTo(fadingTime, 0);
+        $(xId).fadeTo(waitTime, 0);
+        $(yId).fadeTo(waitTime, 0);
 
-        await sleep(fadingTime);
+        await sleep(waitTime);
 
         // DATA
         let temp = localQuery[x];
@@ -98,9 +95,9 @@ async function selectionSort() {
         $(xId).text($(yId).text());
         $(yId).text(temp);
         
-        $(xId).fadeTo(fadingTime, 1);
-        $(yId).fadeTo(fadingTime, 1);
-        await sleep(delayAfterFade);
+        $(xId).fadeTo(waitTime, 1);
+        $(yId).fadeTo(waitTime, 1);
+        await sleep(waitTime);
 
         // Swapping the div elements because swapping background and innerText is only for the visual effect but the ID is still stay the same.
         temp = unsortedHtml[x];
@@ -118,22 +115,19 @@ async function selectionSort() {
         for (let j = i + 1; j < localQuery.length; j++) {
             
             // Update speed        
-            waitTime = 100 * speed;
-            fadingTime = 500 * speed;
-            delayAfterFade = 500 * speed;
-            gotChaWaitTime = 500 * speed;
+            waitTime = FACTOR * multiplier;
 
             $('.line-j').fadeIn();
             $('.line-j').css('left', getMidPoint(localQuery[j]));
-            await sleep(gotChaWaitTime);
+            await sleep(waitTime);
 
             if (localQuery[j] < localQuery[minIndex]) {
                 $('.line-j').css('background-color', 'red');
-                await sleep(gotChaWaitTime);
+                await sleep(waitTime);
 
                 minIndex = j;
                 $('.line-min').css('left', getMidPoint(localQuery[minIndex]));
-                await sleep(gotChaWaitTime);
+                await sleep(waitTime);
 
                 $('.line-j').css('background-color', '');
             }
@@ -170,8 +164,8 @@ const initElementList = () => {
 $('#sort-btn').click(() => selectionSort());
 $('#reset-btn').click(() => initElementList());
 $('#speed-slider').on('input', (e) => {
-    speed = e.target.value;
-    $('#delay-value').text(`x${speed}`);
+    multiplier = e.target.value;
+    $('#delay-value').text(`x${multiplier}`);
 });
 
 initElementList();

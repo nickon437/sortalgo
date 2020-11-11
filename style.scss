@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Nova+Mono&display=swap');
+
 html {
     box-sizing: border-box;
     scroll-behavior: smooth;
@@ -57,11 +58,9 @@ button {
     font-family: inherit;
     font-weight: bold;
     font-size: 1rem;
-    /* font-size: 1rem; */
     cursor: pointer;
     transition: all 0.3s ease-in-out;
     display: flex;
-    /* text-align: center; */
     align-items: center;
     justify-content: center;
     gap: 0.25rem;
@@ -116,7 +115,6 @@ label {
     display: flex;
     gap: 0.2rem;
     justify-content: center;
-    /* vertical-align: middle; */
 }
 
 .element {
@@ -133,24 +131,12 @@ label {
     position: relative;
 }
 
-/* 
-.element::after {
-    display: block;
-    height: 1rem;
-    width: 3px;
-    border-radius: 3px;
-    background-color: white;
-    position: absolute;
-    bottom: -1.5rem;
-    transform-origin: top center;
-    content: "";
-} */
-
 .line-j, .line-i, .line-min {
     height: 1.5rem;
     width: 3px;
     position: absolute;
     top: 0.5rem;
+    transition: all 200ms linear;
     
     &::before {
         content: "";
@@ -179,8 +165,6 @@ label {
 .line-min {
     background-color: white;
     color: black;
-    /* width: 6px; */
-    transition: all 300ms ease-in-out;
     &::after {
         content: "min";
     }
@@ -196,7 +180,6 @@ label {
 
 .line-j {
     background-color: #4caf52;
-    transition: all 100ms linear;
     &::after {
         content: "j";
     }
@@ -256,45 +239,32 @@ label {
     transition: all 0.3s ease-in-out;
     .slider {
         -webkit-appearance: none;
-        /* Override default CSS styles */
         appearance: none;
         width: 100%;
-        /* Full-width */
         height: 5px;
-        /* Specified height */
         background: white;
-        /* Grey background */
         outline: none;
-        /* Remove outline */
         opacity: 0.8;
-        /* Set transparency (for mouse-over effects on hover) */
         -webkit-transition: .2s;
-        /* 0.2 seconds transition on hover */
         transition: opacity .2s;
         border-radius: 3px;
         transition: all 0.3s ease-in-out;
         &:hover {
             opacity: 1;
-            /* Fully shown on mouse-over */
+        }
+        &::-webkit-slider-thumb, &::-moz-range-thumb {
+            width: 16px;
+            height: 16px;
+            background: blueviolet;
+            cursor: pointer;
+            border: none;
+            transition: all 0.3s ease-in-out;
+        }
+        &::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            /* Override default look */
+            appearance: none;
         }
     }
     
-    .slider::-webkit-slider-thumb, .slider::-moz-range-thumb {
-        width: 16px;
-        /* Set a specific slider handle width */
-        height: 16px;
-        /* Slider handle height */
-        background: blueviolet;
-        cursor: pointer;
-        /* Cursor on hover */
-        border: none;
-        transition: all 0.3s ease-in-out;
-    }
-    /* The slider handle (use -webkit- (Chrome, Opera, Safari, Edge) and -moz- (Firefox) to override default look) */
-    
-    .slider::-webkit-slider-thumb {
-        -webkit-appearance: none;
-        /* Override default look */
-        appearance: none;
-    }
 }

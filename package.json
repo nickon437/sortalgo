@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/nickon437/sorting-algorithm-demo#readme",
   "dependencies": {
+    "animejs": "^3.2.1",
     "gh-pages": "^3.1.0",
     "jquery-minify": "^1.0.0",
     "minify": "^6.0.1",
