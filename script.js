@@ -139,18 +139,17 @@ async function selectionSort() {
             }
         }
 
-        // $('.line-j').fadeOut();
 
-        // Swap the found minimum element with the first element
-        await swapContent(minIndex, i);
+        if (minIndex !== i) {
+            // Swap the found minimum element with the first element
+            await swapContent(minIndex, i);
+        }
+
         $('.sorted-marker').css('left', `calc(${getMidPoint(localQuery[i + 1])} - 5.5rem)`);
-        // $('.sorted-marker').css('left', `calc(${getMidPoint(localQuery[i + 1])}px - 5.5rem)`);
         
     }
     
     $('.illustration-line').fadeOut();
-    // $('.line-min').fadeOut();
-    // $('.line-i').fadeOut();
     $('button').fadeIn();
     $('#sort-btn').hide();
     $('button').prop('disabled', false);
