@@ -136,11 +136,12 @@ label {
   gap: 1rem;
 }
 
-.card-illustration-line {
+.illustration-line {
   position: relative;
+  display: none;
 }
 
-.card-illustration-elements {
+.illustration-elements {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;

@@ -41,11 +41,11 @@ const createUnsortedList = () => {
         return `<div id="sel-sort-${character}" class="element" style="background-color: ${color}">${character}</div>`
     });
 
-    $(".card-illustration-elements").html(unsortedHtml.join(''));
+    $(".illustration-elements").html(unsortedHtml.join(''));
 }
 
 const getMidPoint = (character) => {
-    const margin = $(".card-illustration-elements").position().left;
+    const margin = $(".illustration-elements").position().left;
     const id = `#sel-sort-${character}`;
     const leftPos = $(id).position().left - margin;
     return `calc(${leftPos}px + 1rem*2/3)`;
@@ -61,6 +61,8 @@ async function selectionSort() {
     let delayAfterFade = 500 * speed;
     let gotChaWaitTime = 500 * speed;
 
+    
+    $('.illustration-line').fadeIn();
     $('button').prop('disabled', true);
 
     const getIdByIndex = (index) => {
@@ -104,7 +106,7 @@ async function selectionSort() {
         temp = unsortedHtml[x];
         unsortedHtml[x] = unsortedHtml[y];
         unsortedHtml[y] = temp;
-        $(".card-illustration-elements").html(unsortedHtml.join(''));
+        $(".illustration-elements").html(unsortedHtml.join(''));
     };
 
     for (let i = 0; i < localQuery.length - 1; i++) {
@@ -146,8 +148,9 @@ async function selectionSort() {
         
     }
     
-    $('.line-min').fadeOut();
-    $('.line-i').fadeOut();
+    $('.illustration-line').fadeOut();
+    // $('.line-min').fadeOut();
+    // $('.line-i').fadeOut();
     $('button').fadeIn();
     $('#sort-btn').hide();
     $('button').prop('disabled', false);
@@ -156,8 +159,6 @@ async function selectionSort() {
 const initElementList = () => {
     $('#reset-btn').hide();
     $('#sort-btn').fadeIn();
-    $('.line-min').show();
-    $('.line-i').show();
 
     createUnsortedList();
     const startingPos = getMidPoint(DEFAULT_UNSORTED_CHARS[0]);

@@ -107,12 +107,12 @@ label {
 }
 
 
-.card-illustration-line {
+.illustration-line {
     position: relative;
-    ;
+    display: none;
 }
 
-.card-illustration-elements {
+.illustration-elements {
     display: flex;
     gap: 0.2rem;
     justify-content: center;
