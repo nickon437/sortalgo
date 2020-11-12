@@ -1,19 +1,19 @@
-import CharacterList from './CharacterList.js';
+import CharacterSet from './CharacterSet.js';
 
-const charList = new CharacterList();
+const charSet = new CharacterSet();
 const FACTOR = 500;
 let waitTime = FACTOR;
 
 const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
-const getMidPos = (character) => {
+const getIdByIndex = (index) => `#sel-sort-${charSet.getChar(index)}`;
+
+const getMidPos = (index) => {
     const margin = $(".illustration-elements").position().left;
-    const id = `#sel-sort-${character}`;
+    const id = getIdByIndex(index);
     const leftPos = $(id).position().left - margin;
     return `calc(${leftPos}px + 1rem*2/3)`;
 }
-
-const getIdByIndex = (index) => `#sel-sort-${charList.getChar(index)}`;
 
 async function swapContent(x, y) {
     const xId = getIdByIndex(x);
@@ -23,8 +23,8 @@ async function swapContent(x, y) {
     $(yId).fadeTo(waitTime, 0);
     await sleep(waitTime);
 
-    charList.swapElements(x, y);
-    $(".illustration-elements").html(charList.getHtmlArray().join(''));
+    charSet.swapElements(x, y);
+    $(".illustration-elements").html(charSet.getHtmlArray().join(''));
     $(xId).hide().fadeTo(waitTime, 1);
     $(yId).hide().fadeTo(waitTime, 1);
     await sleep(waitTime);
@@ -45,25 +45,25 @@ function updateUiEndSorting() {
 async function selectionSort() {
     updateUiStartSorting();
 
-    for (let i = 0; i < charList.getLength() - 1; i++) {
+    for (let i = 0; i < charSet.getLength() - 1; i++) {
         let minIndex = i;
 
-        const midPosI = getMidPos(charList.getChar(minIndex));
+        const midPosI = getMidPos(minIndex);
         $('.line-min').css('left', midPosI);
         $('.line-i').css('left', midPosI);
         $('.line-j').css('left', midPosI);
         await sleep(waitTime);
         
-        for (let j = i + 1; j < charList.getLength(); j++) {
-            $('.line-j').css('left', getMidPos(charList.getChar(j)));
+        for (let j = i + 1; j < charSet.getLength(); j++) {
+            $('.line-j').css('left', getMidPos(j));
             await sleep(waitTime);
 
-            if (charList.getChar(j) < charList.getChar(minIndex)) {
+            if (charSet.getChar(j) < charSet.getChar(minIndex)) {
                 $('.line-j').css('background-color', 'red');
                 await sleep(waitTime);
 
                 minIndex = j;
-                $('.line-min').css('left', getMidPos(charList.getChar(minIndex)));
+                $('.line-min').css('left', getMidPos(minIndex));
                 await sleep(waitTime);
 
                 $('.line-j').css('background-color', '');
@@ -74,23 +74,23 @@ async function selectionSort() {
             await swapContent(minIndex, i); // Swap the found minimum element with the first element
         }
 
-        $('.sorted-marker').css('left', `calc(${getMidPos(charList.getChar(i + 1))} - 5.5rem)`);
+        $('.sorted-marker').css('left', `calc(${getMidPos(i + 1)} - 5.5rem)`);
     }
 
     updateUiEndSorting();
 }
 
-const initElementList = () => {
+const setupCharacterList = () => {
     $('#reset-btn').hide();
     $('#sort-btn').fadeIn();
-    charList.shuffle();
+    charSet.shuffle();
 }
 
 $('#sort-btn').click(() => selectionSort());
-$('#reset-btn').click(() => initElementList());
+$('#reset-btn').click(() => setupCharacterList());
 $('#speed-slider').on('input', (e) => {
     waitTime = FACTOR * e.target.value; // Update speed
     $('#delay-value').text(`x${e.target.value}`);
 });
 
-initElementList();
+setupCharacterList();

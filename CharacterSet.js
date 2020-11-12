@@ -1,4 +1,4 @@
-class CharacterList {
+class CharacterSet {
   static DEFAULT_UNSORTED_CHARS = ['Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P', 'A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'Z', 'X', 'C', 'V', 'B', 'N', 'M'];
   static SORTED_COLORS = [
     { character: 'A', color: '#c33f3b' },
@@ -30,14 +30,14 @@ class CharacterList {
   ];
 
   constructor() {
-    this.characterList = [];
+    this.characterSet = [];
     this.generate();
   }
 
   generate = function () {
     let htmlArray = [];
-    this.characterList = CharacterList.DEFAULT_UNSORTED_CHARS.map((character) => {
-      const { color } = CharacterList.SORTED_COLORS.find((element) => element.character === character);
+    this.characterSet = CharacterSet.DEFAULT_UNSORTED_CHARS.map((character) => {
+      const { color } = CharacterSet.SORTED_COLORS.find((element) => element.character === character);
       const htmlFormat = `<div id="sel-sort-${character}" class="element" style="background-color: ${color}">${character}</div>`;
       htmlArray.push(htmlFormat);
       return { character, color, htmlFormat };
@@ -45,45 +45,41 @@ class CharacterList {
 
     $(".illustration-elements").html(htmlArray.join(''));
 
-    return this.characterList;
+    return this.characterSet;
   }
 
   getList = () => {
-    return this.characterList;
+    return this.characterSet;
   }
 
   getLength = () => {
-    return this.characterList.length;
+    return this.characterSet.length;
   }
 
   getChar = (index) => {
-    return this.characterList[index].character;
+    return this.characterSet[index].character;
   }
 
-  // setChar = (index, value) => {
-  //   this.characterList[index] = value
-  // } 
-
   getHtmlArray = () => {
-    return this.characterList.map((element) => element.htmlFormat);
+    return this.characterSet.map((element) => element.htmlFormat);
   }
 
   swapElements = (x, y) => {
-    const temp = this.characterList[x];
-    this.characterList[x] = this.characterList[y];
-    this.characterList[y] = temp;
+    const temp = this.characterSet[x];
+    this.characterSet[x] = this.characterSet[y];
+    this.characterSet[y] = temp;
   }
 
   shuffle = () => {
-    for (let i = this.characterList.length - 1; i > 0; i--) {
+    for (let i = this.characterSet.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
-      [this.characterList[i], this.characterList[j]] = [this.characterList[j], this.characterList[i]];
+      [this.characterSet[i], this.characterSet[j]] = [this.characterSet[j], this.characterSet[i]];
     }
 
     $(".illustration-elements").html(this.getHtmlArray().join(''));
 
-    return this.characterList;
+    return this.characterSet;
   }
 }
 
-export default CharacterList;
+export default CharacterSet;
