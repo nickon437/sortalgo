@@ -52,6 +52,7 @@ async function selectionSort() {
         $('.line-min').css('left', midPosI);
         $('.line-i').css('left', midPosI);
         $('.line-j').css('left', midPosI);
+        $('.sorted-marker').css('left', `calc(${getMidPos(i)} - 5.5rem)`);
         await sleep(waitTime);
         
         for (let j = i + 1; j < charSet.getLength(); j++) {
@@ -74,7 +75,6 @@ async function selectionSort() {
             await swapContent(minIndex, i); // Swap the found minimum element with the first element
         }
 
-        $('.sorted-marker').css('left', `calc(${getMidPos(i + 1)} - 5.5rem)`);
     }
 
     updateUiEndSorting();
