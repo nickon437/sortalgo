@@ -1,1 +1,96 @@
-import CharacterSet from"./CharacterSet.js";const charSet=new CharacterSet,FACTOR=500;let waitTime=500;const sleep=e=>new Promise(t=>setTimeout(t,e)),getIdByIndex=e=>`#sel-sort-${charSet.getChar(e)}`,getMidPos=e=>{const t=$(".illustration-elements").position().left,i=getIdByIndex(e);return`calc(${$(i).position().left-t}px + 1rem*2/3)`};async function swapContent(e,t){const i=getIdByIndex(e),a=getIdByIndex(t);$(i).fadeTo(waitTime,0),$(a).fadeTo(waitTime,0),await sleep(waitTime),charSet.swapElements(e,t),$(".illustration-elements").html(charSet.getHtmlArray().join("")),$(i).hide().fadeTo(waitTime,1),$(a).hide().fadeTo(waitTime,1),await sleep(waitTime)}function updateUiStartSorting(){$(".illustration-line").fadeIn(),$("button").prop("disabled",!0)}function updateUiEndSorting(){$(".illustration-line").fadeOut(),$("button").fadeIn(),$("button").prop("disabled",!1),$("#sort-btn").hide()}async function selectionSort(){updateUiStartSorting();for(let e=0;e<charSet.getLength()-1;e++){let t=e;const i=getMidPos(t);$(".line-min").css("left",i),$(".line-i").css("left",i),$(".line-j").css("left",i),$(".sorted-marker").css("left",`calc(${getMidPos(e)} - 5.5rem)`),await sleep(waitTime);for(let i=e+1;i<charSet.getLength();i++)$(".line-j").css("left",getMidPos(i)),await sleep(waitTime),charSet.getChar(i)<charSet.getChar(t)&&($(".line-j").css("background-color","red"),await sleep(waitTime),t=i,$(".line-min").css("left",getMidPos(t)),await sleep(waitTime),$(".line-j").css("background-color",""));t!==e&&await swapContent(t,e)}updateUiEndSorting()}const setupCharacterList=()=>{$("#reset-btn").hide(),$("#sort-btn").fadeIn(),charSet.shuffle()};$("#sort-btn").click(()=>selectionSort()),$("#reset-btn").click(()=>setupCharacterList()),$("#speed-slider").on("input",e=>{waitTime=500*e.target.value,$("#delay-value").text(`x${e.target.value}`)}),setupCharacterList();
+import CharacterSet from './CharacterSet.js';
+
+const charSet = new CharacterSet();
+const FACTOR = 500;
+let waitTime = FACTOR;
+
+const sleep = (ms) => (new Promise(resolve => setTimeout(resolve, ms)));
+
+const getIdByIndex = (index) => (`#sel-sort-${charSet.getChar(index)}`);
+
+const getMidPos = (index) => {
+    const margin = $(".illustration-elements").position().left;
+    const id = getIdByIndex(index);
+    const leftPos = $(id).position().left - margin;
+    return `calc(${leftPos}px + 1rem*2/3)`;
+}
+
+async function swapContent(x, y) {
+    const xId = getIdByIndex(x);
+    const yId = getIdByIndex(y);
+
+    $(xId).fadeTo(waitTime, 0);
+    $(yId).fadeTo(waitTime, 0);
+    await sleep(waitTime);
+
+    charSet.swapElements(x, y);
+    $(".illustration-elements").html(charSet.getHtmlArray().join(''));
+    $(xId).hide().fadeTo(waitTime, 1);
+    $(yId).hide().fadeTo(waitTime, 1);
+    await sleep(waitTime);
+}
+
+function updateUiStartSorting() {
+    $('.illustration-line').fadeIn();
+    $('button').prop('disabled', true);
+}
+
+function updateUiEndSorting() {
+    $('.illustration-line').fadeOut();
+    $('button').fadeIn();
+    $('button').prop('disabled', false);
+    $('#sort-btn').hide();
+}
+
+async function selectionSort() {
+    updateUiStartSorting();
+
+    for (let i = 0; i < charSet.getLength() - 1; i++) {
+        let minIndex = i;
+
+        const midPosI = getMidPos(minIndex);
+        $('.line-min').css('left', midPosI);
+        $('.line-i').css('left', midPosI);
+        $('.line-j').css('left', midPosI);
+        $('.sorted-marker').css('left', `calc(${getMidPos(i)} - 5.5rem)`);
+        await sleep(waitTime);
+        
+        for (let j = i + 1; j < charSet.getLength(); j++) {
+            $('.line-j').css('left', getMidPos(j));
+            await sleep(waitTime);
+
+            if (charSet.getChar(j) < charSet.getChar(minIndex)) {
+                $('.line-j').css('background-color', 'red');
+                await sleep(waitTime);
+
+                minIndex = j;
+                $('.line-min').css('left', getMidPos(minIndex));
+                await sleep(waitTime);
+
+                $('.line-j').css('background-color', '');
+            }
+        }
+
+        if (minIndex !== i) {
+            await swapContent(minIndex, i); // Swap the found minimum element with the first element
+        }
+
+    }
+
+    updateUiEndSorting();
+}
+
+const setupCharacterList = () => {
+    $('#reset-btn').hide();
+    $('#sort-btn').fadeIn();
+    charSet.shuffle();
+}
+
+$('#sort-btn').click(() => selectionSort());
+$('#reset-btn').click(() => setupCharacterList());
+$('#speed-slider').on('input', (e) => {
+    waitTime = FACTOR * e.target.value; // Update speed
+    $('#delay-value').text(`x${e.target.value}`);
+});
+
+setupCharacterList();
