@@ -1,8 +1,9 @@
 import CharacterList from './CharacterList.js';
 
-let multiplier = 1;
 const charList = new CharacterList();
-console.log(charList);
+const FACTOR = 500;
+let multiplier = 1;
+let waitTime = FACTOR * multiplier;
 
 const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -11,21 +12,14 @@ const getMidPoint = (character) => {
     const id = `#sel-sort-${character}`;
     const leftPos = $(id).position().left - margin;
     return `calc(${leftPos}px + 1rem*2/3)`;
-    // $('.line-min').css('left', leftPos + 11);
 }
 
 async function selectionSort() {
-    // const localQuery = [...DEFAULT_UNSORTED_CHARS];
-
-    const FACTOR = 500;
-    let waitTime = FACTOR * multiplier;
-
     $('.illustration-line').fadeIn();
     $('button').prop('disabled', true);
 
-    const getIdByIndex = (index) => {
-        return `#sel-sort-${charList.getChar(index)}`
-    }
+    const getIdByIndex = (index) => `#sel-sort-${charList.getChar(index)}`;
+
     /**
      * To create a seemless swapping effect, 
      * 
@@ -61,17 +55,18 @@ async function selectionSort() {
 
     for (let i = 0; i < charList.getLength() - 1; i++) {
         let minIndex = i;
+
         const midPosI = getMidPoint(charList.getChar(minIndex));
         $('.line-min').css('left', midPosI);
         $('.line-i').css('left', midPosI);
+        $('.line-j').css('left', midPosI);
         await sleep(waitTime);
-
+        
         for (let j = i + 1; j < charList.getLength(); j++) {
-            // Update speed        
-            waitTime = FACTOR * multiplier;
-
-            $('.line-j').fadeIn();
+            waitTime = FACTOR * multiplier; // Update speed
+            
             $('.line-j').css('left', getMidPoint(charList.getChar(j)));
+            $('.line-j').fadeIn();
             await sleep(waitTime);
 
             if (charList.getChar(j) < charList.getChar(minIndex)) {
@@ -104,12 +99,6 @@ const initElementList = () => {
     $('#sort-btn').fadeIn();
 
     charList.shuffle();
-
-    const startingPos = getMidPoint(charList.getChar(0));
-    $('.sorted-marker').css('left', `calc(${startingPos} - 5.5rem)`);
-    $('.line-min').css('left', startingPos);
-    $('.line-i').css('left', startingPos);
-    $('.line-j').css('left', startingPos);
 }
 
 $('#sort-btn').click(() => selectionSort());
